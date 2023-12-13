@@ -10,8 +10,10 @@ import os
 from django.contrib import messages
 import joblib as joblib
 from django.contrib.auth.hashers import make_password
-
-
+from django.views.decorators.http import require_POST
+from django.http import HttpResponse
+from .forms import FeedbackForm
+from django.contrib.auth import authenticate, login as auth_login
 
 def about(request):
 	return render(request, 'about.html')
@@ -29,7 +31,7 @@ def registerView(request):
 	return render(request, 'register.html')
 
 
-def registerUser(request):
+'''def registerUser(request):
 	if request.method == 'POST':
 		username = request.POST['username']
 		email = request.POST['email']
@@ -42,10 +44,32 @@ def registerUser(request):
 		return redirect('reg')
 	else:
 		messages.error(request, 'Failed To Register, Try Again Later')
-		return redirect('reg')
+		return redirect('reg')'''
+
+def registerUser(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+
+        # Check if the username already exists
+        if User.objects.filter(username=username).exists():
+            messages.error(request, 'Username already exists. Please choose a different username.')
+            return redirect('reg')  # Redirect to your registration page
+
+        # If the username is unique, proceed with registration
+        password = make_password(password)
+        user = User(username=username, email=email, password=password, is_patient=True)
+        user.save()
+        messages.success(request, 'Account was created successfully.')
+        return redirect('reg')  # Redirect to your registration page or another page on success
+    else:
+        messages.error(request, 'Failed to register. Please try again later.')
+        return redirect('reg')  # Redirect to your registration page on failure
 
 
-def loginView(request):
+
+'''def loginView(request):
 	if request.method == 'POST':
 		username = request.POST['username']
 		password = request.POST['password']
@@ -62,7 +86,32 @@ def loginView(request):
 			messages.info(request, "Invalid Username Or Password")
 			return redirect('login')
 	else:
-		return render(request, 'login.html')					
+		return render(request, 'login.html') '''
+
+
+def loginView(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None and user.is_active:
+            auth_login(request, user)
+
+            if user.is_patient:
+                messages.success(request, "Login Successful. Welcome, Patient!")
+                return redirect('patient')
+            elif user.is_doctor:
+                messages.success(request, "Login Successful. Welcome, Doctor!")
+                return redirect('doctor')
+            else:
+                messages.warning(request, "Login Successful. But user type is not specified.")
+                return redirect('login')
+        else:
+            messages.error(request, "Invalid Username Or Password")
+            return render(request, 'login.html')
+    else:
+        return render(request, 'login.html')
 
 
 
@@ -191,7 +240,7 @@ def MakeMent(request):
 			a.save()
 			return JsonResponse({'status':'saved'})
 		else:
-			print('Appointment Exist')
+			print('Appointment Exists')
 			return JsonResponse({'status':'exist'})
 	except Exception as e:
 		return JsonResponse({'status':'error'})			
@@ -285,7 +334,7 @@ def MakeMend(request):
       clf = joblib.load('model/medical_rf.pkl')
       prediction = clf.predict(test)
       prediction = prediction[0]
-      print('Predicted Disease Is',prediction)
+      print('Predicted Drug Is',prediction)
 
       try:
           check_medical = Medical.objects.filter(patient_id=disease).exists()
@@ -293,18 +342,25 @@ def MakeMend(request):
               Medical.objects.filter(pk= disease).update(medicine=prediction)
               return JsonResponse({'status':'recommended'})
           else:
-              print('Drug Exist')
+              print('Drug Exists')
           return JsonResponse({'status':'exist'}) 
       except Exception as e:
           print(e)    
   else:
       print('AI Can Not Recommend Drug')
       Medical.objects.filter(pk= disease).update(medicine='See Doctor')
-      return JsonResponse({'status':'not is store'})
+      return JsonResponse({'status':'not in store'})
 
 
 
+def register_view(request):
+    return render(request, 'registration/register.html')
 
+def login_view(request):
+    return render(request, 'registration/login.html')
+
+def doctors(request):
+	return render(request, 'registration/doctors.html')
 
 @login_required
 def doctor_ment(request):

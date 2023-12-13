@@ -76,21 +76,33 @@
           <div class="form-group">
             <label for="password1">Day</label>
             <input type="date" id="day"  value="dd-mm-yyyy"
-                        min="2021-12-12" max="2022-12-12"
+                        min="2023-12-12" max="2025-12-31"
                         class="form-control" name="birth_date" placeholder="Birth Date" required="required">
           </div>
 
 
-                  <div class="form-group">
+          <!--<div class="form-group">
             <label for="password1">Time</label>
             <input type="text" class="form-control" id="time" placeholder="Time">
-          </div>
+          </div> -->
+
+          <div class="form-group">
+            <label for="time">Time</label>
+            <input type="time" class="form-control" id="time" name="appointment_time" required>
+        </div>
+        
 
 
         </div>
         <div class="modal-footer border-top-0 d-flex justify-content-center">
-          <button type="button" class="btn btn-success modal_ment" id="">Submit</button>
+          <button type="button" class="btn btn-success modal_ment" id="submitt" onclick="
+          alert('Appointment is confirmed'); setTimeout(function () {
+            location.reload();
+        }, 1000);" >Submit</button>
         </div>
+        <script>
+
+      </script>
       </form>
     </div>
   </div>

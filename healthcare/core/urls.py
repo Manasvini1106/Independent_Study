@@ -29,4 +29,7 @@ urlpatterns = [
     path('meet/save/', views.SaveMent, name='savement'),
     path('doctors/', views.doctor_list, name='dr_list'),
     path('about/', views.about, name='about'),
+    path('register/', views.register_view, name='register_view'),
+    path('login/', views.login_view, name='login_view'),
+    path('doctors/', views.doctors, name='doctors'),
 ]

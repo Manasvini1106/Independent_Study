@@ -48,9 +48,13 @@
             {% if messages %}
             <div class="messages">
                 {% for message in messages %}
-
-                    <div class="alert alert-success" style="color:red;"> {{ message }}</div>
-
+                    {% if message.tags == 'success' %}
+                        <div class="alert alert-success" style="color:green;">{{ message }}</div>
+                    {% elif message.tags == 'error' %}
+                        <div class="alert alert-danger" style="color:red;">{{ message }}</div>
+                    {% else %}
+                        <div class="alert alert-info">{{ message }}</div>
+                    {% endif %}
                 {% endfor %}
             </div>
             {% endif %}
@@ -65,6 +69,7 @@
 
     <div class="col-sm-4"></div>
 
+</div>
 </div>
 </div>
 {% endblock %}

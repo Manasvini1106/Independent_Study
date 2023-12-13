@@ -45,7 +45,16 @@ class Profile(models.Model):
     birth_date = models.DateField(default='None')
     region = models.CharField(max_length=255, default='')
     gender = models.CharField(max_length=255)
-    country = models.CharField(max_length=255, default='Tanzania')
+    country = models.CharField(max_length=255, default='')
 
     def __str__(self):
         return self.country
+    
+class Feedback(models.Model):
+    STAR_CHOICES = [(i, str(i)) for i in range(1, 6)]  # Assume a 5-star rating scale
+
+    star_rating = models.IntegerField(choices=STAR_CHOICES, default=1)
+    feedback_text = models.TextField()
+
+    def __str__(self):
+        return f"Rating: {self.star_rating} - Feedback: {self.feedback_text}"

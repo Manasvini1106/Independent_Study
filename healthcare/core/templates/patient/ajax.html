@@ -52,7 +52,7 @@
 		  })
 	
 	
-	  // Make Appointment
+	  /* Make Appointment
 	  $('#tbody').on("click", ".btn_ment", function(){
 		  console.log('Button Appointment Clicked');
 		let disease = $(this).attr("data-sid");
@@ -84,7 +84,53 @@
 					}
 				}
 			});
-	  });
+	  }); */
+
+	  // Make Appointment
+		$('#tbody').on("click", ".btn_ment", function(){
+			console.log('Button Appointment Clicked');
+			let disease = $(this).attr("data-sid");
+			var userid = $('#tbody #user_id').val();
+
+			console.log('Prediction ID is',disease);
+			console.log('User ID is',userid);
+
+			mydata = {disease: disease, userid: userid};
+			$.ajax({
+				url: "{% url 'ment' %}",
+				method: "POST",
+				data: mydata,
+
+				success: function(data) {
+					x = data.status; 
+					console.log('Data Sent To The Backend');
+					console.log('Appointment Status Is ',x);
+
+					// Update button color based on the response
+					var button = $(".btn_ment[data-sid='" + disease + "']");
+					if (x == 'saved') {
+						button.removeClass('btn-success').addClass('btn-primary');
+						button.val('Requested');
+						button.prop('disabled', true);  // Optional: Disable the button to prevent multiple clicks
+					} else if (x == 'exist') {
+						// You can update the color or text for 'exist' scenario if needed
+						button.removeClass('btn-success').addClass('btn-warning');
+						button.val('Appointment Exists');
+						button.prop('disabled', true);
+					} else {
+						// You can update the color or text for other scenarios if needed
+						button.removeClass('btn-success').addClass('btn-danger');
+						button.val('Something Went Wrong');
+						button.prop('disabled', true);
+					}
+
+					// Display result message
+					$('#ment_result').html("");
+					$('#ment_result').append('Appointment Was Successfully Requested');
+				}
+			});
+		});
+
 	
 
 	  // Show Prediction
@@ -93,7 +139,7 @@
 		let disease = $(this).attr("data-sid");
 		var userid = $('#tbody #user_id').val();
 	
-		console.log('Prediction ID is',disease);
+		console.log('You are predicted to have',disease);
 		console.log('User ID is',userid);
 	
 		mydata = {disease:disease, userid:userid};

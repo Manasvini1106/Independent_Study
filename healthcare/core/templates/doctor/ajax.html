@@ -21,10 +21,13 @@
 	
 				success:function(data){
 					console.log('Data Sent To The Backend');
+				button.removeClass('btn-primary').addClass('btn-danger');
 	
 				}
 			});
-	  });
+	  }); 
+});
+
 	
 	
 	  // Arrange Appointment
@@ -37,7 +40,9 @@
 		console.log('Prediction ID is',disease);
 	
 	  });
-	
+
+
+
 	  // Recommend Drug
 	  $('#myform').on("click", ".modal_ment", function(){
 		  console.log('Button Modal Clicked');
@@ -66,5 +71,4 @@
 			});
 	  });  
 	
-	});
 	</script>

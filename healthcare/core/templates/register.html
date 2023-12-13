@@ -56,12 +56,16 @@
 
  <br>
                    <br>
-                        <div class="form-group">
+        <div class="form-group">
             {% if messages %}
             <div class="messages">
                 {% for message in messages %}
-
-                    <div class="alert alert-success" style="color:green;"> {{ message }}</div>
+                {% if message.tags == 'success' %}
+                <div class="alert alert-success" style="color: green;"> {{ message }}</div>
+            {% elif message.tags == 'error' %}
+                <div class="alert alert-danger" style="color: red;"> {{ message }}</div>
+            {% endif %}
+                    <!--<div class="alert alert-success" style="color:green;"> {{ message }}</div>-->
 
                 {% endfor %}
             </div>
