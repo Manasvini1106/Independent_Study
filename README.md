@@ -38,10 +38,9 @@ BayMax is an innovative healthcare integration platform that leverages advanced 
 
 To run BayMax locally, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/yourusername/BayMax.git`
-2. Install the required dependencies: `pip install -r requirements.txt`
-3. Run the Django development server: `python manage.py runserver`
-4. Access the application at `http://localhost:8000` in your web browser.
+1. Clone the repository: `git clone https://github.com/Manasvini1106/Independent_Study`
+2. Run the Django development server: `python manage.py runserver`
+3. Access the application  in your web browser.
 
 ## Contributing
 
