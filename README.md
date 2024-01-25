@@ -1,4 +1,3 @@
-# Independent_Research_Study
 # BayMax Healthcare Integration
 
 BayMax is an innovative healthcare integration platform that leverages advanced technologies to provide accessible and personalized healthcare solutions. Seamlessly combining machine learning algorithms, frontend development using HTML, CSS, and JS, and backend functionalities powered by Django and MySQL, BayMax aims to revolutionize the way healthcare is delivered.
